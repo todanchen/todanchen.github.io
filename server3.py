@@ -5,7 +5,7 @@ from select import select
 def main():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    server.blind(('10.52.229.245', 8080))
+    server.bind(('124.160.127.162', 8001))
     server.listen(5)
 
     accept(server)
@@ -21,28 +21,26 @@ def accept(server):
         rs, ws, xs = select(rlist, wlist, xlist)
         for r in rs:
             if r is server:
-                if r is server:
-                    conn, addr = server.accept()
-                    print("进入一个连接：", addr)
-                    rlist.append(conn)
-                else:
-                    try:
-                        flag = r.recv(1024).decode()
-                    except ConnectionResetError:
-                        print('客户端已经断开！')
-                        r.close()
-                        rlist.remove()
-                        pass
+                conn, addr = server.accept()
+                rlist.append(conn)
+                print('Have a new Conn')
+            else:
+                try:
+                    flag = r.recv(1024).decode()
+                except ConnectionResetError:
+                    r.close()
+                    rlist.remove()
+                    pass
 
-                    if not flag:
-                        r.close()
-                        rlist.remove(r)
-                    elif 'initial' in flag:
-                        type = 1
-                    elif 'request' in flag:
-                        type = 2
-                    elif 'stop' in flag:
-                        type = 3
+                if not flag:
+                    r.close()
+                    rlist.remove(r)
+                elif 'initial' in flag:
+                    type = 1
+                elif 'request' in flag:
+                    type = 2
+                elif 'stop' in flag:
+                    type = 3
         if type == 1:
             date_rate = int(flag.split(',')[1])
             vdata = bytes(date_rate*8*5)
