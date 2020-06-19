@@ -1,6 +1,8 @@
 import time
 import socket
 from select import select
+from signal import signal, SIGPIPE, SIG_DFL
+signal(SIGPIPE,SIG_DFL)
 
 def main():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
