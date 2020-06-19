@@ -35,10 +35,7 @@ def accept(server):
                     rlist.remove(r)
                     pass
 
-                if not flag:
-                    r.close()
-                    rlist.remove(r)
-                elif 'initial' in flag:
+                if 'initial' in flag:
                     type = 1
                 elif 'request' in flag:
                     type = 2
