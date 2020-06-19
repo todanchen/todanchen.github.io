@@ -8,6 +8,7 @@ def main():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server.bind(('172.22.227.66', 8080))
+    server.setblocking(False)
     #server.bind(('127.0.0.1', 8001))
     server.listen(5)
 
