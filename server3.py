@@ -5,7 +5,8 @@ from select import select
 def main():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    server.bind(('124.160.127.162', 8001))
+    # server.bind(('124.160.127.162', 8001))
+    server.bind(('127.0.0.1', 8001))
     server.listen(5)
 
     accept(server)
@@ -29,7 +30,7 @@ def accept(server):
                     flag = r.recv(1024).decode()
                 except ConnectionResetError:
                     r.close()
-                    rlist.remove()
+                    rlist.remove(r)
                     pass
 
                 if not flag:
@@ -56,13 +57,13 @@ def accept(server):
             r.send(mdata)
             print('Send the next video clice, this time: ', time.time(), '------value_B: ', B)
         elif type == 3:
+            print("Stop send the video data, this time: ", time.time(), '------value_B: ', B)
             Bx = (B - 12)
             sleeptime = Bx*8
             B = B - Bx
             time.sleep(sleeptime)
             r.send('exit'.encode())
-            print("Stop send the video data, this time: ", time.time(), '------value_B: ', B)
-
+            print('Pause end.')
 
 if __name__ == '__main__':
     main()
